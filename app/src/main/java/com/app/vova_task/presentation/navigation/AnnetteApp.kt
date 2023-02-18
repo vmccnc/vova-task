@@ -12,8 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.app.vova_task.presentation.screens.SawingsMachinesScreen
+import com.app.vova_task.presentation.screens.SplashScreen
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @ExperimentalFoundationApi
 @Composable
 fun AnnetteApp(
@@ -24,10 +26,14 @@ fun AnnetteApp(
 
     NavHost(
         navController = navController,
-        startDestination = "main_page",
+        startDestination = "splash_page",
         modifier
     ) {
 
+
+        composable(route = "splash_page") {
+           SplashScreen(navController = navController)
+        }
 
         composable(route = "main_page") {
             SawingsMachinesScreen() {
