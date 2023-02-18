@@ -1,7 +1,5 @@
 package com.app.vova_task.presentation.screens
 
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -37,8 +35,10 @@ fun SawingsMachinesScreen(
     vm: SawingsViewModel = hiltViewModel(),
     clickMachine: (Machine) -> Unit
 ) {
-    val machines: MutableState<List<Machine>> = vm.machinesLive
+    val machines: List<Machine> by vm.machinesLive
     val isLoading: Boolean by vm.isLoading
+
+    var isDialog by  vm.isDialog
 
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -49,10 +49,14 @@ fun SawingsMachinesScreen(
         )
     )
 
-
+    if (isDialog) {
+        FinalScoreDialog() {
+            isDialog = false
+        }
+    }
 
     val coroutineScope = rememberCoroutineScope()
-
+    var gg by remember { mutableStateOf<String>("") }
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
@@ -61,20 +65,20 @@ fun SawingsMachinesScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Sawing machines") },
-                actions = {
-                    IconButton(onClick = {
-                        keyboardController?.hide()
-                        coroutineScope.launch {
-                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-                                bottomSheetScaffoldState.bottomSheetState.expand()
-                            } else {
-                                bottomSheetScaffoldState.bottomSheetState.collapse()
-                            }
-                        }
-                    }) {
-                        Icon(imageVector = Icons.Default.Checklist, contentDescription = null)
-                    }
-                }
+//                actions = {
+//                    IconButton(onClick = {
+//                        keyboardController?.hide()
+//                        coroutineScope.launch {
+//                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+//                                bottomSheetScaffoldState.bottomSheetState.expand()
+//                            } else {
+//                                bottomSheetScaffoldState.bottomSheetState.collapse()
+//                            }
+//                        }
+//                    }) {
+//                        Icon(imageVector = Icons.Default.Checklist, contentDescription = null)
+//                    }
+//                }
             )
         },
         sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
@@ -83,7 +87,25 @@ fun SawingsMachinesScreen(
     ) { padding ->
 
         val tt = padding
-        Screen0(isLoading, machines.value, clickMachine)
+
+        OutlinedTextField(
+            value = gg,
+            onValueChange = {
+                gg = it
+            },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Enter your word") },
+//                isError = gameUiState.isGuessedWordWrong,
+            textStyle = TextStyle(Color.Gray, 20.sp),
+            keyboardActions = KeyboardActions(onDone = {
+                vm.loadMachines(gg)
+//                coroutineScope.launch {
+//                    ff.bottomSheetState.collapse()
+//                }
+            }),
+        )
+        Screen0(isLoading, machines, clickMachine)
     }
 }
 

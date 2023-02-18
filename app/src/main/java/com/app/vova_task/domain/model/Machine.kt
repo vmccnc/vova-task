@@ -1,6 +1,6 @@
 package com.app.vova_task.domain.model
 
-
+import com.app.vova_task.data.local.MachineEntity
 
 
 data class Machine(
@@ -15,24 +15,16 @@ data class Machine(
 ) {
 
 
-//    fun toEntity(): MachineEntity =
-//        MachineEntity(
-//            machineId = machineId ,
-//            headline = headline ?: "",
-//            manufacturer = manufacturer ?: "",
-//            model = model ?: "",
-//            category = category ?: "",
-//            condition = condition ?: "",
-//            city = city ?: "",
-//            currency = currency ?: "",
-//            description = description ?: "",
-//            specSheet = specSheet ?: "",
-//            stockNumber = stockNumber ?: "",
-//            website = website ?: "",
-//            year = year ?: "",
-//            url = url,
-//            images = images.joinToString(",")
-//        )
+    fun toEntity(): MachineEntity =
+        MachineEntity(
+            machineId = machineId ,
+            manufacturer = manufacturer ?: "",
+            model = model ?: "",
+            city = city ?: "",
+            description = description ?: "",
+            year = year ?: "",
+            url = url
+        )
 
 
 }
