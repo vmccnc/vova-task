@@ -1,23 +1,21 @@
 package com.app.vova_task.data.remote.repository
 
-import android.util.Log
-import com.app.vova_task.data.local.MachineEntity
-import com.app.vova_task.data.local.dao.MillingDao
-import com.app.vova_task.data.local.toListMachines
+import com.app.vova_task.data.local.HitEntity
+import com.app.vova_task.data.local.dao.HitDao
 import com.app.vova_task.data.remote.RetrofitApiService
-import com.app.vova_task.data.remote.dto.MachineDto
-import com.app.vova_task.data.remote.dto.toMachineList
-import com.app.vova_task.domain.model.Machine
-import com.app.vova_task.domain.repository.MachinesRepository
-import java.io.IOException
+import com.app.vova_task.data.remote.dto.Welcome10
+import com.app.vova_task.domain.repository.HitRepository
+import retrofit2.Response
 import javax.inject.Inject
 
-class MillingsRepositoryImpl @Inject constructor(
+class HitRepositoryImpl @Inject constructor(
     private val service: RetrofitApiService,
-    private val millingDao: MillingDao
-) : MachinesRepository {
+    private val hitDao: HitDao
+) : HitRepository {
 
-    override suspend fun getSawings(str: String )  = service.listSawings(str)
+//    override val machinesLive = mutableStateOf<List<Machine>>(listOf())
+
+    override suspend fun getSawings(str: String): Response<Welcome10> = service.listSawings(q = str)
 
 //
 //        try {
@@ -60,20 +58,17 @@ class MillingsRepositoryImpl @Inject constructor(
 //        }
 
 
+    override suspend fun oneFromDb(machineId: Long): HitEntity =
+        hitDao.getHitByHitId(machineId)
 
-    override suspend fun oneFromDb(machineId: String): MachineEntity =
-        millingDao.getMachineByMachineId(machineId)
+    //
+    override suspend fun getMachineByModel(type: String): List<HitEntity> =
+        hitDao.getHitByModel(type)
 
-
-//    override suspend fun machinesFromDb(): List<MachineEntity> = millingDao.allMillings()
+    //
 //
-    override suspend fun getMachineByModel(type: String ): List<MachineEntity> =  millingDao.getMachineByModel(type,)
+    override suspend fun updateMachinesInDb(machines: List<HitEntity>) =
+        hitDao.saveAll(machines)
 //
-//
-    override suspend fun updateMachinesInDb(machines: List<MachineEntity>) =
-//        millingDao.deleteAndInsertInTransaction(machines)
-        millingDao.saveAll(machines)
-//
-//    override suspend fun deleteAllFromDb() = millingDao.deleteAll()
 
 }

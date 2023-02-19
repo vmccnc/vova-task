@@ -4,11 +4,10 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
 import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.app.vova_task.presentation.navigation.AnnetteApp
+import com.app.vova_task.presentation.navigation.ChallengeApp
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +27,7 @@ internal class SawingsMachinesScreenKtTest {
             navController = TestNavHostController(LocalContext.current)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
 
-            AnnetteApp(navController = navController)
+            ChallengeApp(navController = navController)
         }
     }
 

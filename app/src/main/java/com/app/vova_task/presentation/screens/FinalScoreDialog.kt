@@ -4,28 +4,21 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable
 fun FinalScoreDialog(
-
-    onPlayAgain: () -> Unit,
-
+    clickOk: () -> Unit,
 ) {
 
 
     AlertDialog(
-        onDismissRequest = {
-
-        },
+        onDismissRequest = { },
         title = { Text("From DB") },
-        text = { Text("Internate is not avaluble . Data from cache.") },
-//        modifier = modifier,
-
+        text = { Text("Internet is not available. Data from cache.") },
         confirmButton = {
-            TextButton(onClick = onPlayAgain) {
+            TextButton(clickOk) {
                 Text(text = "Ok")
             }
         }

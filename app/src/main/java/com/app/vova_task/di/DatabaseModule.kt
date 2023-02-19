@@ -3,7 +3,7 @@ package com.app.vova_task.di
 import android.content.Context
 import androidx.room.Room
 import com.app.vova_task.data.local.AptDatabase
-import com.app.vova_task.data.local.dao.MillingDao
+import com.app.vova_task.data.local.dao.HitDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 class DatabaseModule {
 
     @Provides
-    fun provideMachineDao(appDatabase: AptDatabase): MillingDao = appDatabase.millingDao()
+    fun provideMachineDao(appDatabase: AptDatabase): HitDao = appDatabase.hitDao()
 
     @Provides
     @Singleton

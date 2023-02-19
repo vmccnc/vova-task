@@ -8,11 +8,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -23,22 +23,23 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.app.vova_task.R
-import com.app.vova_task.domain.model.Machine
+import com.app.vova_task.data.remote.dto.Hit
 import com.app.vova_task.presentation.components.LoadingUI
-import com.app.vova_task.presentation.vm.SawingsViewModel
+import com.app.vova_task.presentation.vm.HitsViewModel
+import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SawingsMachinesScreen(
-    vm: SawingsViewModel = hiltViewModel(),
-    clickMachine: (Machine) -> Unit
+fun HitsMachinesScreen(
+    vm: HitsViewModel = hiltViewModel(),
+    clickMachine: (Hit) -> Unit
 ) {
-    val machines: List<Machine> by vm.machinesLive
+    val machines: List<Hit> by vm.hits
     val isLoading: Boolean by vm.isLoading
 
-    var isDialog by  vm.isDialog
+    var isDialog by vm.isDialog
 
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -64,7 +65,7 @@ fun SawingsMachinesScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("Sawing machines") },
+                title = { Text("Coding Challenge") },
 //                actions = {
 //                    IconButton(onClick = {
 //                        keyboardController?.hide()
@@ -88,23 +89,26 @@ fun SawingsMachinesScreen(
 
         val tt = padding
 
-        OutlinedTextField(
-            value = gg,
-            onValueChange = {
-                gg = it
-            },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("Enter your word") },
+        Column(Modifier.padding(8.dp)) {
+            OutlinedTextField(
+                value = gg,
+                onValueChange = {
+                    gg = it
+                },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Enter your word") },
 //                isError = gameUiState.isGuessedWordWrong,
-            textStyle = TextStyle(Color.Gray, 20.sp),
-            keyboardActions = KeyboardActions(onDone = {
-                vm.loadMachines(gg)
+                textStyle = TextStyle(Color.Gray, 20.sp),
+                keyboardActions = KeyboardActions(onDone = {
+                    vm.loadMachines(gg)
 //                coroutineScope.launch {
 //                    ff.bottomSheetState.collapse()
 //                }
-            }),
-        )
+                }),
+            )
+        }
+
         Screen0(isLoading, machines, clickMachine)
     }
 }
@@ -113,14 +117,12 @@ fun SawingsMachinesScreen(
 @Composable
 fun Screen0(
     isLoading: Boolean,
-//    isError: Boolean,
-    machines: List<Machine>,
-    clickMachine: (Machine) -> Unit
+    machines: List<Hit>,
+    clickMachine: (Hit) -> Unit
 ) {
 
     when {
         isLoading -> LoadingUI()
-//        isError -> ErrorUI()
         else -> {
             if (machines.isNotEmpty()) {
                 LazyColumn() {
@@ -128,7 +130,7 @@ fun Screen0(
                     item { Spacer(modifier = Modifier.height(8.dp)) }
 
                     items(machines) {
-                        MachineCart(it, clickMachine)
+                        HitCart(it, clickMachine)
                     }
 
                     item { Spacer(modifier = Modifier.height(60.dp)) }
@@ -148,9 +150,9 @@ fun Screen0(
 
 
 @Composable
-fun MachineCart(
-    item: Machine,
-    clickMachine: (Machine) -> Unit
+fun HitCart(
+    item: Hit,
+    clickMachine: (Hit) -> Unit
 ) {
 
     Card(
@@ -162,7 +164,7 @@ fun MachineCart(
         Column {
 
             Image(
-                painter = rememberImagePainter(data = item.url) {
+                painter = rememberImagePainter(data = item.webformatURL) {
                     this.error(R.drawable.ic_broken_image)
                     this.placeholder(R.drawable.ic_placeholder)
                 },
@@ -172,9 +174,29 @@ fun MachineCart(
                     .height(194.dp),
                 contentScale = ContentScale.Crop
             )
+
+
+            Row(
+                Modifier.fillMaxWidth().padding(start = 8.dp, top = 8.dp, end = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End) {
+                Text("${item.user}", modifier = Modifier.padding( 8.dp))
+
+                GlideImage(
+                    imageModel = item.userImageURL,
+                    contentScale = ContentScale.Crop,
+//                    placeHolder = ImageBitmap.imageResource(R.drawable.ic_app_placeholder),
+                    alignment = Alignment.TopStart,
+                    modifier = Modifier
+//                            .fillMaxWidth()
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+            }
+
             Text(
-                text = "${item.model} (${item.manufacturer}) ",
-                modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp),
+                text = "Tags: ${item.tags}  ",
+                modifier = Modifier.padding( 8.dp),
                 style = MaterialTheme.typography.subtitle1
             )
 
@@ -185,7 +207,7 @@ fun MachineCart(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SheetContentGame2(vm: SawingsViewModel, ff: BottomSheetScaffoldState) {
+fun SheetContentGame2(vm: HitsViewModel, ff: BottomSheetScaffoldState) {
 
     val coroutineScope = rememberCoroutineScope()
 

@@ -7,13 +7,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.app.vova_task.presentation.navigation.AnnetteApp
-import com.app.vova_task.presentation.screens.SawingsMachinesScreen
+import com.app.vova_task.presentation.navigation.ChallengeApp
 import com.app.vova_task.ui.theme.VovataskTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,23 +26,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
-                    AnnetteApp(rememberNavController())
+                    ChallengeApp(rememberNavController())
 
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    VovataskTheme {
-        Greeting("Android")
     }
 }
