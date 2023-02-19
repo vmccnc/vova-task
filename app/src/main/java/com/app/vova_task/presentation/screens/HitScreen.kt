@@ -1,7 +1,6 @@
 package com.app.vova_task.presentation.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,14 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
-import com.app.vova_task.R
 import com.app.vova_task.data.remote.dto.Hit
 import com.app.vova_task.presentation.vm.HitViewModel
 import com.skydoves.landscapist.glide.GlideImage
@@ -36,7 +31,7 @@ fun HitScreen(
     val hit: Hit by vm.hit
 
     machineId?.let {
-        vm.getMachineById(it)
+        vm.getHitById(it)
     }
 
     val context = LocalContext.current

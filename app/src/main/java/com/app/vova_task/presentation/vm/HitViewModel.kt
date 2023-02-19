@@ -16,12 +16,18 @@ class HitViewModel @Inject constructor(
     private val machineRepository: HitRepository
 ) : ViewModel() {
 
-    private var _hit =
-        mutableStateOf(Hit(0, "", "", "", 0, 0, "", 0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""))
+    private var _hit = mutableStateOf(
+        Hit(
+            0, "", "", "",
+            0, 0, "", 0, 0,
+            "", 0, 0, 0, 0, 0, 0,
+            0, 0, 0, "", ""
+        )
+    )
     var hit: State<Hit> = _hit
 
 
-    fun getMachineById(machineId: Long) {
+    fun getHitById(machineId: Long) {
         viewModelScope.launch {
             _hit.value = machineRepository.oneFromDb(machineId).toHit()
         }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -57,7 +58,7 @@ fun HitsMachinesScreen(
     }
 
     val coroutineScope = rememberCoroutineScope()
-    var gg by remember { mutableStateOf<String>("") }
+    var gg by rememberSaveable{ mutableStateOf<String>("") }
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
@@ -177,7 +178,9 @@ fun HitCart(
 
 
             Row(
-                Modifier.fillMaxWidth().padding(start = 8.dp, top = 8.dp, end = 8.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, top = 8.dp, end = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End) {
                 Text("${item.user}", modifier = Modifier.padding( 8.dp))
