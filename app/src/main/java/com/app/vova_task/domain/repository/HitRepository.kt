@@ -12,9 +12,9 @@ interface HitRepository {
 
     val hits: MutableState<List<Hit>>
 
-    suspend fun getSawings(str: String): Response<Welcome10>
+//    suspend fun getSawings(str: String): Response<Welcome10>
 
-      fun loadMachines(str: String, scope: CoroutineScope): Unit
+      fun loadMachines(str: String, scope: CoroutineScope,  isLoading: (Boolean) -> Unit): Unit
 
 
     // DB

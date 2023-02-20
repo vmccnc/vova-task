@@ -24,9 +24,14 @@ interface HitDao {
 
     @Query("SELECT * FROM hits where (tags  LIKE  '%' || :tag1 || '%' or tags LIKE '%' || :tag2 || '%')")
     suspend fun getHitByModel(tag1: String, tag2: String): List<HitEntity>
-//
-//    @Query("SELECT * FROM hits where headline = :type OR headline = :type2")
-//    suspend fun getHitByType(type: String, type2: String ): List<HitEntity>
+
+
+    @Query("SELECT * FROM hits where (tags  LIKE  '%' || :tag1 || '%' or tags LIKE '%' || :tag2 || '%' or tags LIKE '%' || :tag3 || '%')")
+    suspend fun getHitByModel(tag1: String, tag2: String, tag3: String): List<HitEntity>
+
+
+
+
 
     @Query("DELETE FROM hits")
     fun deleteAll()

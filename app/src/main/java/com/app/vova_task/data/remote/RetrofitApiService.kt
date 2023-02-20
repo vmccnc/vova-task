@@ -11,7 +11,7 @@ interface RetrofitApiService {
 
 
     @GET("api")
-    suspend fun listSawings(
+    suspend fun listHits(
         @Query("key") key: String = "33764718-b1e9035dd1aebe7be717a8125",
         @Query("q") q: String,
         @Query("image_type") image_type: String = "photo",
@@ -21,7 +21,6 @@ interface RetrofitApiService {
 
 
     companion object {
-        //        const val BASE_URL = "http://q11.jvmhost.net/"
         const val BASE_URL = "https://pixabay.com/"
     }
 
