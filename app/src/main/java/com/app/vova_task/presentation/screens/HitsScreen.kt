@@ -9,15 +9,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,80 +34,52 @@ fun HitsMachinesScreen(
     vm: HitsViewModel = hiltViewModel(),
     clickMachine: (Hit) -> Unit
 ) {
-    val machines: List<Hit> by vm.hits
+
+    val hits: List<Hit> by vm.hits
     val isLoading: Boolean by vm.isLoading
 
-    var isDialog by vm.isDialog
 
-    val context = LocalContext.current
-    val keyboardController = LocalSoftwareKeyboardController.current
+    var currentWord: String by vm.currentWord
 
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberBottomSheetState(
-            initialValue = BottomSheetValue.Collapsed
-        )
-    )
 
-    if (isDialog) {
-        FinalScoreDialog() {
-            isDialog = false
-        }
-    }
+    Scaffold(
 
-    val coroutineScope = rememberCoroutineScope()
-    var gg by rememberSaveable{ mutableStateOf<String>("") }
-
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = { SheetContentGame2(vm, bottomSheetScaffoldState) },
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = { Text("Coding Challenge") },
-//                actions = {
-//                    IconButton(onClick = {
-//                        keyboardController?.hide()
-//                        coroutineScope.launch {
-//                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-//                                bottomSheetScaffoldState.bottomSheetState.expand()
-//                            } else {
-//                                bottomSheetScaffoldState.bottomSheetState.collapse()
-//                            }
-//                        }
-//                    }) {
-//                        Icon(imageVector = Icons.Default.Checklist, contentDescription = null)
-//                    }
-//                }
-            )
+
+                )
         },
-        sheetShape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
-        sheetElevation = 20.dp,
-        sheetPeekHeight = 0.dp
-    ) { padding ->
+
+        ) { padding ->
 
         val tt = padding
 
-        Column(Modifier.padding(8.dp)) {
-            OutlinedTextField(
-                value = gg,
-                onValueChange = {
-                    gg = it
-                },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Enter your word") },
+        Column() {
+
+
+            Column(Modifier.padding(8.dp)) {
+                OutlinedTextField(
+                    value = currentWord,
+                    onValueChange = vm::setCurrentWord,
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Enter your word") },
 //                isError = gameUiState.isGuessedWordWrong,
-                textStyle = TextStyle(Color.Gray, 20.sp),
-                keyboardActions = KeyboardActions(onDone = {
-                    vm.loadMachines(gg)
+                    textStyle = TextStyle(Color.Gray, 20.sp),
+                    keyboardActions = KeyboardActions(onDone = {
+                        vm.loadMachines(currentWord)
 //                coroutineScope.launch {
 //                    ff.bottomSheetState.collapse()
 //                }
-                }),
-            )
+                    }),
+                )
+            }
+
+            Screen0(isLoading, hits, clickMachine)
         }
 
-        Screen0(isLoading, machines, clickMachine)
     }
 }
 

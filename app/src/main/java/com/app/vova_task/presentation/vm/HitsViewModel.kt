@@ -12,13 +12,18 @@ import javax.inject.Inject
 @HiltViewModel
 class HitsViewModel @Inject constructor(private val hitRepository: HitRepository) : ViewModel() {
 
-//    val hits = mutableStateOf<List<Hit>>(listOf())
     val hits: State<List<Hit>> = hitRepository.hits
     val isLoading = mutableStateOf<Boolean>(false)
-    val isDialog = mutableStateOf<Boolean>(false)
+
+    val currentWord = mutableStateOf("fruits")
 
     init {
-        loadMachines("fruits")
+        loadMachines(currentWord.value)
+    }
+
+
+    fun setCurrentWord(str: String){
+        currentWord.value = str
     }
 
     fun loadMachines(str: String) {
