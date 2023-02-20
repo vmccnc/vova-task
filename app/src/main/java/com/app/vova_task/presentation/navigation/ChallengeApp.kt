@@ -47,7 +47,7 @@ fun ChallengeApp(
             arguments = listOf(navArgument("id") { type = NavType.LongType }),
             content = { entry ->
                 val id = entry.arguments?.getLong("id")
-                Log.d("ddd", "dm:: machineId = $id")
+                Log.d("ddd", "vova:: machineId = $id")
                 HitScreen(id) {
                     navController.popBackStack()
                 }

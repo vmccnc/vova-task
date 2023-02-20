@@ -43,7 +43,7 @@ class HitRepositoryImpl @Inject constructor(
 
                 if (response.isSuccessful) {
                     listHits = response.body()?.hits ?: emptyList()
-                    listHits.forEach { Log.d("gg", "dm:: hit ${it.user}  ") }
+                    listHits.forEach { Log.d("gg", "vova:: hit ${it.user}  ") }
 
 
                     if (listHits.isNotEmpty())
@@ -51,19 +51,19 @@ class HitRepositoryImpl @Inject constructor(
 
                 }
 
-                Log.d("gg", "dm:: size of list with Hits = ${listHits.size} ")
+                Log.d("gg", "vova:: size of list with Hits = ${listHits.size} ")
 
              } catch (e: IOException) {
-                Log.d("gg", "dm::  IOExeption = $e  ")
+                Log.d("gg", "vova::  IOExeption = $e  ")
 
             } catch (e: Exception) {
-                Log.d("gg", "dm::  Exeption = $e  ")
+                Log.d("gg", "vova::  Exeption = $e  ")
 
             } finally {
                 if (listOfTags.size == 1) {
                     hits.value = hitDao.getHitByModel(listOfTags[0]).toListHits()
                 }else if (listOfTags.size == 2){
-                    Log.d("gg", "dm:: size = ${listOfTags.size} / '${listOfTags[0]}' - '${listOfTags[1]}'  ")
+                    Log.d("gg", "vova:: size = ${listOfTags.size} / '${listOfTags[0]}' - '${listOfTags[1]}'  ")
                     hits.value = hitDao.getHitByModel(listOfTags[0], listOfTags[1], ).toListHits()
                 } else{
                     hits.value = hitDao.getHitByModel(listOfTags[0], listOfTags[1], listOfTags[2], ).toListHits()

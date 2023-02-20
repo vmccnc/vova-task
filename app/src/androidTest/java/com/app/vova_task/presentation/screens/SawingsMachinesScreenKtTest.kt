@@ -36,7 +36,7 @@ internal class SawingsMachinesScreenKtTest {
 //        assertEquals(CupcakeScreen.Start.name, navController.currentBackStackEntry?.destination?.route)
 
         val str = navController.currentBackStackEntry?.destination?.route
-        println("dm:: Destination: $str")
+        println("vova:: Destination: $str")
         navController.assertCurrentRouteName("splash_page")
 
 //        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.my_string)
