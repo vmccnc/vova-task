@@ -2,9 +2,13 @@ package com.app.vova_task.data.local.dao
 
 import androidx.room.*
 import com.app.vova_task.data.local.HitEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HitDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(item: HitEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveAll(list: List<HitEntity>)
@@ -14,7 +18,7 @@ interface HitDao {
 
 
     @Query("SELECT * FROM hits")
-    suspend fun allMillings(): List<HitEntity>
+    fun getAllHits(): Flow<List<HitEntity>>
 
     @Query("SELECT * FROM hits where id = :machineId")
     suspend fun getMillingById(machineId: Int): HitEntity
