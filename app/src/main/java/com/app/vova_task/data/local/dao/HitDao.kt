@@ -18,7 +18,7 @@ interface HitDao {
 
 
     @Query("SELECT * FROM hits")
-    fun getAllHits(): Flow<List<HitEntity>>
+    suspend fun getAllHits(): List<HitEntity>
 
     @Query("SELECT * FROM hits where id = :machineId")
     suspend fun getMillingById(machineId: Int): HitEntity

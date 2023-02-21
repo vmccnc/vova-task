@@ -7,7 +7,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.app.vova_task.data.local.AptDatabase
 import com.app.vova_task.data.local.HitEntity
 import com.app.vova_task.data.local.dao.HitDao
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -23,10 +22,13 @@ class ItemDaoTest {
     private lateinit var inventoryDatabase: AptDatabase
 
     private val item1 =
-        HitEntity(1, "", "eee", "", 0, 0, "", 0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "")
+        HitEntity(1, "", "r1", "", 0, 0, "", 0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "")
 
     private val item2 =
-        HitEntity(2, "", "rr", "", 0, 0, "", 0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "")
+        HitEntity(2, "", "r2", "", 0, 0, "", 0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "")
+
+    private val item3 =
+        HitEntity(3, "", "r3", "", 0, 0, "", 0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "")
 
 
     @Before
@@ -52,19 +54,46 @@ class ItemDaoTest {
     @Test
     @Throws(Exception::class)
     fun daoInsert_insertsItemIntoDB() = runBlocking {
-        addOneItemToDb()
-        val allItems: List<HitEntity> = itemDao.getAllHits().first()
+        itemDao.insert(item1)
+
+        val allItems: List<HitEntity> = itemDao.getAllHits()
+        allItems.forEach {
+            println("dm:: hilt: $it")
+        }
         assertEquals(allItems[0], item1)
     }
 
 
-    private suspend fun addOneItemToDb() {
-        itemDao.insert(item1)
-    }
+    @Test
+    @Throws(Exception::class)
+    fun daoGetAllItems_returnsAllItemsFromDB() = runBlocking {
 
-    private suspend fun addTwoItemsToDb() {
         itemDao.insert(item1)
         itemDao.insert(item2)
+
+        val allItems = itemDao.getAllHits()
+        allItems.forEach {
+            println("dm:: hilt: $it")
+        }
+        assertEquals(allItems[0], item1)
+        assertEquals(allItems[1], item2)
+    }
+
+
+    @Test
+    @Throws(Exception::class)
+    fun saveAll_returnsAllItemsFromDB() = runBlocking {
+
+        itemDao.saveAll(listOf(item1, item2, item3))
+
+
+        val allItems = itemDao.getAllHits()
+        allItems.forEach {
+            println("dm:: hilt: $it")
+        }
+        assertEquals(allItems[0], item1)
+        assertEquals(allItems[1], item2)
+        assertEquals(allItems[2], item3)
     }
 
 
